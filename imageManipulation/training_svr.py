@@ -4,8 +4,8 @@ from joblib import dump
 import csv_analyzing
 
 file_name = "img_data"
-img_training = [i for i in range(30) if i not in (22, 10, 5)]
 images_to_test = [22, 10, 5]
+img_training = [i for i in range(15) if i not in images_to_test]
 data_filename = "sample_data.csv"
 X = []
 Y = []
@@ -17,12 +17,13 @@ csv_analyzing.read_rows(data_filename, [2], Y, lambda x: x)
 print("finished reading chemical components")
 # currently only loops through the first x images and trains the model, going to change this to take a list of images
 # and then see what they give
+A = []
 for i in img_training:
-    A = []
     csv_filename = file_name + str(i)
-    csv_analyzing.read_rows(csv_filename, range(3), A, csv_analyzing.normalize_rgb)
-    X.append(A)
+    csv_analyzing.read_rows(csv_filename, range(3), A, lambda x: x)
+    X.append(csv_analyzing.find_occurences([(A[i], A[i+1], A[i+2]) for i in range(0, len(A), 3)]))
 print("finished reading RGB components")
+
 
 regression_model = svm.SVR(C=1.0, kernel='rbf')
 
@@ -44,8 +45,8 @@ for i in images_to_test:
     Z = []
     ZZ = []
     csv_filename = file_name + str(i)
-    csv_analyzing.read_rows(csv_filename, range(3), Z, csv_analyzing.normalize_rgb)
-    ZZ.append(Z)
+    csv_analyzing.read_rows(csv_filename, range(3), Z, lambda x: x)
+    ZZ.append(csv_analyzing.find_occurences([(Z[i], Z[i+1], Z[i+2]) for i in range(0, len(Z), 3)]))
     prediction = regression_model.predict(ZZ)
     for s in prediction:
         #print("image number " + str(s) + ":")
