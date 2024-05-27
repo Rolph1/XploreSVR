@@ -2,11 +2,13 @@ from PIL import Image
 import os
 import csv
 
+requiredDimensions = [60, 70]  # width, height after cropping
+crop_rectangle = (1025, 778, 1085, 848)
 
-# crops the function since we need specific dimensions
+# crops the function since we need specific dimensions (ROI)
 def crop_func(img):
     # crop rectangle (top right, bottom right, top left, bottom left
-    crop_rectangle = (1025, 778, 1600, 1579)
+    #crop_rectangle = (1025, 778, 1600, 1579)
     return img.crop(crop_rectangle)
 
 
@@ -26,8 +28,6 @@ def write_to_csv(rgb_values, filename):
         writer = csv.writer(csvfile)
         writer.writerows(rgb_values)
 
-
-requiredDimensions = [575, 801]  # width, height after cropping
 IMAGES_FOLDER = "C:\\Users\\PC\\Documents\\imagesToOpen"
 csv_filename = 'data.csv'
 
@@ -44,9 +44,9 @@ for currFile in files:
         image = Image.open(currFile)
         image = crop_func(image)
 
-        if image.size != tuple(requiredDimensions):
-            print(f"Skipping {currFile}: Wrong dimensions")
-            continue
+        #if image.size != tuple(requiredDimensions):
+        #    print(f"Skipping {currFile}: Wrong dimensions")
+        #    continue
 
         rgb_image = image.convert('RGB')
         rgb_values = get_rgb(rgb_image, requiredDimensions)

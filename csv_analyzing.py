@@ -1,47 +1,39 @@
 import csv
 import numpy as np
 from scipy.sparse import csr_matrix
-from sklearn.decomposition import TruncatedSVD
 
-'''
-def preprocessing(X):
-    X_transformed = []
-    for i in X:
-        X_sparse = csr_matrix(i)
-        svd = TruncatedSVD(n_components=300)
-        X_transformed.append(svd.fit_transform(X_sparse))
-        print(np.shape(np.array(X_transformed)))
-    return X_transformed
-    '''
-from scipy.sparse import csr_matrix
-from sklearn.decomposition import TruncatedSVD
-from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import math
 
+#optional preprocessing used for experimenting, not necessary with a 
+#vector that is only 1792 elements long.
+'''
 def preprocessing(X):
     # Convert the entire dataset to a sparse matrix first
     X_sparse = csr_matrix(X)
     
     # Initialize Truncated SVD with 300 components
     # Note: Ensure that n_components is less than min(X.shape)
-    svd = TruncatedSVD(n_components=min(5, np.shape(np.array(X))[1]-1)) 
+    #svd = TruncatedSVD(n_components=min(5, np.shape(np.array(X))[1]-1)) 
     
     # Apply SVD on the sparse matrix
     X_transformed = svd.fit_transform(X_sparse)
         # Initialize the Min-Max scaler
-    scaler = MinMaxScaler()
+    #scaler = MinMaxScaler()
     # Scale the transformed data to range [0, 1]
-    X_scaled = scaler.fit_transform(X_transformed)
+    #X_scaled = scaler.fit_transform(X_transformed)
     #min(300, np.shape(np.array(X))[1]-1)
     # Print shape to confirm it's 2D
-    print(np.shape(X_scaled))
-    print(np.array(X_scaled))
+    #print(np.shape(X_scaled))
+    #print(np.array(X_scaled))
     return X_transformed
+'''
 
 def normalize_rgb(x):
     return int(x)/255
 
+# I implemented this based on the following page:
+# https://www.rmuti.ac.th/user/kedkarn/impfile/RGB_to_HSI.pdf
 def rgb_to_hsi(R, G, B):
     """
     Converts rgb values to hsi
