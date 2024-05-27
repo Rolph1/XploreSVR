@@ -4,9 +4,9 @@ import csv_analyzing
 from lssvr import LSSVR 
 from sklearn.svm import SVR
 file_name = "img_data"
-images_to_test = [9] #, 12, 11, 24    ; 5,10,19
-images_to_test2 = [38]
-img_training = [i for i in range(50) if i not in images_to_test and i not in images_to_test2]
+images_to_test = [1] #, 12, 11, 24    ; 5,10,19
+images_to_test2 = [9]
+img_training = [i for i in range(14)] #if i not in images_to_test and i not in images_to_test2
 data_filename = "sample_data.csv"
 X = []
 Y = []

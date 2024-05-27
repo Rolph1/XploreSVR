@@ -5,8 +5,8 @@ from scipy.sparse import csr_matrix
 import numpy as np
 import math
 
-#optional preprocessing used for experimenting, not necessary with a 
-#vector that is only 1792 elements long.
+#optional preprocessing used for experimenting with very sparse
+# vectors, not relevant with a vector that is only 1792 elements long.
 '''
 def preprocessing(X):
     # Convert the entire dataset to a sparse matrix first
@@ -118,6 +118,10 @@ def find_occurences(X):
 
 
 def calculate_features(A):
+    """
+    Used when experimenting with alternative ways of pooling/
+    training the model, not relevant for the final product.
+    """
     r_ = [i[0] for i in A]
     g_ = [i[1] for i in A if len(i) > 1]
     b_ = [i[2] for i in A if len(i) > 2]
@@ -160,3 +164,11 @@ def read_rows(filename, rows, X, fun):
                 if line[j] == "":
                     break
                 X.append(fun(float(line[j])))
+
+def process_for_prediction(img_to_test, ZZ):
+    Z = []
+    for csv_filename in img_to_test:
+        read_rows(csv_filename, range(3), Z, lambda x: x)
+        occurences = find_occurences([(Z[i], Z[i+1], Z[i+2]) for i in range(0, len(Z), 3)])
+        ZZ.append(occurences)
+        
